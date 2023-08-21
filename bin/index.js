@@ -11,6 +11,8 @@ import chalk from 'chalk'
 import boxen from 'boxen'
 import yargs from 'yargs/yargs'
 
+import { commands } from '../scripts/settings.js'
+
 import figlet from 'figlet'
 
 const currentExecturingDir = process.cwd()
@@ -28,50 +30,47 @@ figlet('MULTIVERS', 'Standard', function (err, title) {
                 '-p: or -process  <the process> \r\n -c or -component <name> : the component you want to parse'
             )
         )
-        .options('p', {
-            alias: 'process',
-            describe: 'process to execute',
-            default: '',
-            type: 'string',
-            demandOption: true,
+        .options(commands.p.name, {
+            alias: commands.p.alias,
+            describe: commands.p.describe,
+            default: commands.p.default,
+            type: commands.p.type,
+            demandOption: commands.p.demandOption,
         })
-        .options('c', {
-            alias: 'component',
-            describe: 'component to parse',
-            default: '',
-            type: 'string',
-            demandOption: false,
+        .options(commands.c.name, {
+            alias: commands.c.alias,
+            describe: commands.c.describe,
+            default: commands.c.default,
+            type: commands.c.type,
+            demandOption: commands.c.demandOption,
         })
-        .options('sw', {
-            alias: 'searchWhere',
-            describe:
-                'search where : in name (component name: takes the first occurency)/ in fullName (full component path)',
-            default: 'fullName.contains',
-            type: 'string',
-            demandOption: false,
+        .options(commands.sw.name, {
+            alias: commands.sw.alias,
+            describe: commands.sw.describe,
+            default: commands.sw.default,
+            type: commands.sw.type,
+            demandOption: commands.sw.demandOption,
         })
-        .options('d', {
-            alias: 'direction',
-            describe:
-                'direction mode : up / down the version. Note! It will only prepare the version reference file it will also try to grab the existings physical folders versions previousely done with this tool.',
-            default: 'up',
-            type: 'string',
-            demandOption: false,
+        .options(commands.d.name, {
+            alias: commands.d.alias,
+            describe: commands.d.describe,
+            default: commands.d.default,
+            type: commands.d.type,
+            demandOption: commands.d.demandOption,
         })
-        .options('y', {
-            alias: 'y_vers',
-            describe:
-                'version: "latest" = default,  or the version number prepared with process "v-up"',
-            default: 'latest',
-            type: 'string',
-            demandOption: false,
+        .options(commands.y.name, {
+            alias: commands.y.alias,
+            describe: commands.y.describe,
+            default: commands.y.default,
+            type: commands.y.type,
+            demandOption: commands.y.demandOption,
         })
-        .options('o', {
-            alias: 'overwrite',
-            describe: 'overwrite file',
-            default: 'false',
-            type: 'boolean',
-            demandOption: false,
+        .options(commands.o.name, {
+            alias: commands.o.alias,
+            describe: commands.o.describe,
+            default: commands.o.default,
+            type: commands.o.type,
+            demandOption: commands.o.demandOption,
         })
         .demandOption(['process'], 'Please provide a process to execute')
         .help().argv
