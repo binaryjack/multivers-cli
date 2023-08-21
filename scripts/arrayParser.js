@@ -87,12 +87,23 @@ const arrayParser = () => {
         let pathSplitted = path.toString().split(`\\`)
 
         let isRelative = false
+        let isRelativeToCurrentFolder = false
         if (fromSplitted[0] === '..') {
             fromSplitted = fromSplitted.slice(1)
             isRelative = true
         }
 
-        const startFrom = pathSplitted.indexOf(fromSplitted[0])
+        let startFrom = ''
+
+        if (fromSplitted[0] === '.') {
+            fromSplitted = fromSplitted.slice(1)
+            isRelativeToCurrentFolder = true
+
+            startFrom = pathSplitted.lastIndexOf(fromSplitted[0])
+        } else {
+            startFrom = pathSplitted.indexOf(fromSplitted[0])
+        }
+
         let target = pathSplitted.slice(startFrom).join('/').split('.')[0]
 
         let source = fromSplitted.join('/')
@@ -100,6 +111,11 @@ const arrayParser = () => {
         if (isRelative) {
             source = `../${source}`
             target = `../../${target}`
+        }
+
+        if (isRelativeToCurrentFolder) {
+            source = `./${source}`
+            target = `./../${target}`
         }
 
         return importsString.replace(source, target)
