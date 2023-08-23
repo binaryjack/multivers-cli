@@ -2,7 +2,7 @@ const settings = () => {
     const statingNewVersionFrom = 2
     const notProjectImport = ['@', 'react', 'reportWebVitals']
 
-    const commands = {
+    const coms = {
         applicationTitle: 'MULTIVERS',
         processes: {
             build: {
@@ -79,7 +79,7 @@ const settings = () => {
     return {
         notProjectImport,
         statingNewVersionFrom,
-        commands,
+        coms,
     }
 }
 export default settings

@@ -11,9 +11,11 @@ import chalk from 'chalk'
 import boxen from 'boxen'
 import yargs from 'yargs/yargs'
 
-import { commands } from '../scripts/settings.js'
+import settings from '../scripts/settings.js'
 
 import figlet from 'figlet'
+
+const { coms } = settings()
 
 const currentExecturingDir = process.cwd()
 
@@ -23,6 +25,7 @@ figlet('MULTIVERS', 'Standard', function (err, title) {
         console.dir(err)
         return
     }
+    const commands = coms.parameters
     console.clear()
     const argv = yargs(process.argv.slice(2))
         .usage(
@@ -212,7 +215,7 @@ figlet('MULTIVERS', 'Standard', function (err, title) {
 
         console.log(
             `executing update files to: ${
-                argv.y_vers ? argv.y_vers : 'latest'
+                argv.y_vers ? argv.yersion : 'latest'
             } for: `,
             chalk.green(
                 currentExecturingDir,
@@ -235,7 +238,7 @@ figlet('MULTIVERS', 'Standard', function (err, title) {
             console.log(chalk.yellow('Please provide a component name'))
             return
         }
-        if (!argv.y || !argv.y_vers) {
+        if (!argv.y || !argv.yersion) {
             console.log(
                 chalk.yellow(
                     'Please provide a version (must exists in the reference version file)'
