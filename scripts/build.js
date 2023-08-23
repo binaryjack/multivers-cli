@@ -3,6 +3,8 @@ import InDb from './db.js'
 import dependenciesParser from './dependenciesParser.js'
 import stringParsers from './stringParsers.js'
 import arrayParser from './arrayParser.js'
+import filesManager from './fileManager.js'
+import progress from './progress.js'
 
 const build = (startFolder) => {
     global.rootDirectory = startFolder
@@ -12,12 +14,19 @@ const build = (startFolder) => {
     const { saveFiles, files, addItem, directoryName } = InDb()
     const { splitAndTrim, getExtension } = stringParsers()
     const { trimFromSrcDirectory } = arrayParser()
+    const { countFilesInDirectory, skipDirectory } = filesManager()
 
+    const count = countFilesInDirectory(startFolder)
+    const { start, stop, incr, info } = progress()
+    start(count)
     const recursFiles = (path, output = []) => {
+        if (skipDirectory(path)) return output
+
+        incr(path)
+
         const fileList = fs.readdirSync(path)
         for (const file of fileList) {
-            if (path.includes('node_modules') || file.includes('node_modules'))
-                continue
+            incr(file)
 
             const currentFile = `${path}\\${file}`
             if (fs.statSync(currentFile).isDirectory()) {
@@ -37,12 +46,15 @@ const build = (startFolder) => {
         }
         return output
     }
-
+    stop()
     const collectedFiles = recursFiles(directoryName)
 
     for (const file of collectedFiles) {
         addItem(files, file)
     }
+
+    info('Process finished')
+
     saveFiles()
     dependenciesParser()
 }

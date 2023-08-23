@@ -19,7 +19,7 @@ const { coms } = settings()
 
 const currentExecturingDir = process.cwd()
 
-figlet('MULTIVERS', 'Standard', function (err, title) {
+figlet(coms.applicationTitle, 'Standard', function (err, title) {
     if (err) {
         console.log('something went wrong...')
         console.dir(err)
@@ -83,7 +83,7 @@ figlet('MULTIVERS', 'Standard', function (err, title) {
             `${chalk.redBright(title)}`,
 
             {
-                padding: 2,
+                padding: 1,
                 width: '100',
                 title: chalk.blueBright('v 1.0'),
                 titleAlignment: 'center',
@@ -204,7 +204,7 @@ figlet('MULTIVERS', 'Standard', function (err, title) {
             console.log(chalk.yellow('Please provide a component name'))
             return
         }
-        if (!argv.y || !argv.y_vers) {
+        if (!argv.y || !argv.yersion) {
             console.log(
                 chalk.yellow(
                     'Please provide a version (must exists in the reference version file)'
@@ -215,15 +215,9 @@ figlet('MULTIVERS', 'Standard', function (err, title) {
 
         console.log(
             `executing update files to: ${
-                argv.y_vers ? argv.yersion : 'latest'
+                argv.y ? argv.yersion : 'latest'
             } for: `,
-            chalk.green(
-                currentExecturingDir,
-                argv.c,
-                argv.sw,
-                argv.y_vers,
-                argv.o
-            )
+            chalk.green(currentExecturingDir, argv.c, argv.sw, argv.y, argv.o)
         )
         updateFiles(currentExecturingDir, argv.c, argv.sw, argv.y, argv.o)
     }

@@ -1,7 +1,10 @@
 import stringParsers from './stringParsers.js'
+import fileManager from './fileManager.js'
 // const sprs = require('./stringParser')
 
 const arrayParser = () => {
+    const { fileExists } = fileManager()
+
     const { isNotProjectImport, splitAndTrim, sanitizeCollection, replaceAll } =
         stringParsers()
 
@@ -117,6 +120,11 @@ const arrayParser = () => {
             source = `./${source}`
             target = `./../${target}`
         }
+
+        const fileName = fromSplitted[fromSplitted.length - 1]
+
+        const sourceExists = fileExists(offsetPathRight(source, -1), fileName)
+        const targetExists = fileExists(offsetPathRight(target, -1), fileName)
 
         return importsString.replace(source, target)
     }

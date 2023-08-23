@@ -1,6 +1,13 @@
 import fs from 'fs'
 import path from 'path'
+import progress from './progress.js'
+import settings from './settings.js'
+import stringParsers from './stringParsers.js'
 const fileManager = () => {
+    const { infinite } = progress()
+    const { skipDirectories } = settings()
+    const { replaceAll } = stringParsers()
+
     const directoryName = global.rootDirectory
 
     const baseDbDirectory = `${directoryName}\\versions`
@@ -63,10 +70,12 @@ const fileManager = () => {
         }
     }
 
-    const getAllFiles = (directory, files = []) => {
+    const getAllFilesNoSkip = (directory, files = []) => {
         const filesInDirectory = fs.readdirSync(directory)
+        infinite(directory)
         for (const file of filesInDirectory) {
             const absolute = path.join(directory, file)
+            infinite(absolute)
             if (fs.statSync(absolute).isDirectory()) {
                 getAllFiles(absolute, files)
             } else {
@@ -74,6 +83,54 @@ const fileManager = () => {
             }
         }
         return files
+    }
+
+    const getAllFiles = (directory, files = []) => {
+        if (skipDirectory(directory)) return files
+        const filesInDirectory = fs.readdirSync(directory)
+        infinite(directory)
+        for (const file of filesInDirectory) {
+            const absolute = path.join(directory, file)
+            infinite(absolute)
+            if (fs.statSync(absolute).isDirectory()) {
+                getAllFiles(absolute, files)
+            } else {
+                files.push(absolute)
+            }
+        }
+        return files
+    }
+
+    const countFilesInDirectory = (dirPath) => {
+        try {
+            const files = getAllFiles(dirPath)
+            return files.length
+        } catch (err) {
+            console.log(err)
+        }
+    }
+
+    const skipDirectory = (path) => {
+        for (const dName of skipDirectories) {
+            if (path.includes(dName)) return true
+        }
+        return false
+    }
+
+    const fileExists = (path, fileName) => {
+        try {
+            const pathToSearch = replaceAll(
+                `${directoryName}\\src\\${path}`,
+                '/',
+                '\\'
+            )
+            const files = getAllFilesNoSkip(pathToSearch)
+            for (const f of files) {
+                console.log(f)
+            }
+        } catch {
+            return false
+        }
     }
 
     return {
@@ -95,6 +152,14 @@ const fileManager = () => {
         loadFiles,
         save,
         getAllFiles,
+
+        countFilesInDirectory,
+
+        skipDirectory,
+
+        getAllFilesNoSkip,
+
+        fileExists,
     }
 }
 export default fileManager

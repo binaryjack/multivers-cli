@@ -1,9 +1,23 @@
 const settings = () => {
     const statingNewVersionFrom = 2
     const notProjectImport = ['@', 'react', 'reportWebVitals']
-
+    const skipDirectories = [
+        'node_modules',
+        '.git',
+        'versions',
+        'testcafe',
+        '.vscode',
+        'public',
+        'deploy_env_files',
+        'debug_sqli',
+        'coverage',
+        '.vs',
+        'screenshots',
+        'reporter',
+    ]
+    const takeOnlyDirectories = ['src']
     const coms = {
-        applicationTitle: 'MULTIVERS',
+        applicationTitle: 'MVERS',
         processes: {
             build: {
                 name: 'build',
@@ -80,6 +94,8 @@ const settings = () => {
         notProjectImport,
         statingNewVersionFrom,
         coms,
+        skipDirectories,
+        takeOnlyDirectories,
     }
 }
 export default settings
