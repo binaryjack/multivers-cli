@@ -6,8 +6,6 @@ import settings from './settings.js'
 import arrayParser from './arrayParser.js'
 import chalk from 'chalk'
 import cliProgress from 'cli-progress'
-import dependencyBuilder from './dependencyBuilder.js'
-import { save } from 'npm/lib/utils/metrics.js'
 
 const updateFiles = (
     root,
@@ -17,14 +15,12 @@ const updateFiles = (
     overwrite = false
 ) => {
     global.rootDirectory = root
-    const { statingNewVersionFrom } = settings()
     const { replaceAll } = stringParsers()
     const { directoryName } = fileManager()
     const {
         buildVersionPath,
         buildPath,
         buildPathOffset,
-        offsetPathRight,
         insertInPath,
         mergePathToImport,
     } = arrayParser()

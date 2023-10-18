@@ -1,7 +1,7 @@
 import stringParsers from './stringParsers.js'
 import fileManager from './fileManager.js'
 // const sprs = require('./stringParser')
-
+//https://js2ts.com/
 const arrayParser = () => {
     const { fileExists } = fileManager()
 

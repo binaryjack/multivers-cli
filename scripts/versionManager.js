@@ -1,13 +1,8 @@
-import fs from 'fs'
 import InDb from './db.js'
 import stringParsers from './stringParsers.js'
 import fileManager from './fileManager.js'
 import settings from './settings.js'
-import chalk from 'chalk'
-import cliProgress from 'cli-progress'
 import dependencyBuilder from './dependencyBuilder.js'
-import { save } from 'npm/lib/utils/metrics.js'
-
 const newUniqueItem = (
     id = 0,
     component = undefined,
@@ -25,8 +20,6 @@ const newUniqueItem = (
 const versionManager = (root, component, searchWhere, direction) => {
     global.rootDirectory = root
     const { statingNewVersionFrom } = settings()
-    const { replaceAll } = stringParsers()
-    const { directoryName } = fileManager()
     const {
         flatHierarchies,
         saveFlatHierarchies,

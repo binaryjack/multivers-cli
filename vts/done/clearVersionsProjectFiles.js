@@ -1,12 +1,20 @@
 import fs from 'fs'
 import InDb from './db.js'
+import stringParsers from './stringParsers.js'
+import fileManager from './fileManager.js'
+import settings from './settings.js'
 import arrayParser from './arrayParser.js'
 import chalk from 'chalk'
+import cliProgress from 'cli-progress'
+import dependencyBuilder from './dependencyBuilder.js'
+import { save } from 'npm/lib/utils/metrics.js'
 
 const clearVersionsProjectFiles = (root, component, searchWhere, version) => {
     global.rootDirectory = root
-
-    const { buildPath } = arrayParser()
+    const { statingNewVersionFrom } = settings()
+    const { replaceAll } = stringParsers()
+    const { directoryName } = fileManager()
+    const { buildVersionPath, buildPath } = arrayParser()
 
     const { flatHierarchies, getComponent, versions, getVersionNumber } = InDb()
     // get the component

@@ -1,0 +1,46 @@
+{
+    "name": "mvers-cli",
+    "private": true,
+    "version": "0.1.0",
+    "description": "File version manager",
+    "author": "Piana Tadeo",
+    "keywords": [
+        "typescript",
+        "cli",
+        "starter"
+    ],
+    "license": "MIT",
+    "main": "index.js",
+    "bin": {
+        "mvr": "./bin/index.js"
+    },
+    "files": [
+        "bin/**/*",
+        "!bin/**/*.test.js"
+    ],
+    "scripts": {
+        "dev": "ts-node ./src/cli.ts",
+        "clean": "rimraf ./bin/ ./exec/",
+        "build": "npm run clean && tsc && npm i -g",
+        "bundle": "npm run build && pkg . --out-dir ./exec/"
+    },
+    "devDependencies": {
+        "rimraf": "^2.6.3",
+        "ts-node": "^8.3.0",
+        "typescript": "^5.2.2"
+    },
+    "dependencies": {
+        "@types/boxen": "^3.0.1",
+        "@types/chalk": "^2.2.0",
+        "@types/cli-progress": "^3.11.3",
+        "@types/commander": "^2.12.2",
+        "@types/node": "^20.8.5",
+        "@types/react": "^18.2.28",
+        "boxen": "^7.1.1",
+        "chalk": "^5.3.0",
+        "cli-progress": "^3.12.0",
+        "commander": "^11.0.0",
+        "yesno": "^0.4.0"
+    },
+    "type": "module"
+}
