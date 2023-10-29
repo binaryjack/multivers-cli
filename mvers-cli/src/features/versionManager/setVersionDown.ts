@@ -6,11 +6,6 @@ export const setVersionDown = (
     flattenedTree: IHierarchyDependency[],
     foundComponent: IDependency
 ) => {
-    // id: id,
-    // component: component,
-    // parents: parents,
-    // childs: childs,
-
     const versionOutput = []
 
     const { versions } = InDb()
@@ -20,7 +15,6 @@ export const setVersionDown = (
             ?.dependencies ?? []
 
     for (const f of flattenedTree) {
-        //
         const existigVersion = componentVersions.find(
             (o) => o.fullName === f?.component?.fullName
         )

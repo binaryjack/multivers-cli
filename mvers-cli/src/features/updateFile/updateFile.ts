@@ -1,5 +1,5 @@
 import { setGlobalRoot } from '../../helpers/utils.js'
-import { build } from '../builder/build.js'
+import { loopProjectFiles } from '../builder/loopProjectFiles.js'
 import { getComponent } from '../db/getComponent.js'
 import { getVersionNumber } from '../db/getVersionNumber.js'
 import {
@@ -61,7 +61,7 @@ export const updateFiles = (
     )
 
     // ================== BUILD the dependency file  =============================
-    build(global.rootDirectory, true)
+    loopProjectFiles(global.rootDirectory, true)
     // update the dependency file with the new file version
     dependenciesUpdater()
 

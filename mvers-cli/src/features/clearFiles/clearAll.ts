@@ -6,7 +6,7 @@ import { getAllFilesNoSkip } from '../filesManager/getAllFilesNoSkip.js'
 import { ProgressBar } from '../progress/progress.js'
 
 export const clearAll = async (folder: string) => {
-    const ok = await yesno({
+    await yesno({
         question:
             'This will remove all files and versions but not the project files produced with it, continue?',
         invalid: function ({ question, defaultValue, yesValues, noValues }) {

@@ -11,17 +11,11 @@ export const setVersionUp = (
     flattenedTree: IHierarchyDependency[],
     foundComponent: IDependency
 ) => {
-    // id: id,
-    // component: component,
-    // parents: parents,
-    // childs: childs,
-
     const { statingNewVersionFrom } = settings()
 
     const versionOutput: IDependencyVersion[] = []
 
     const { versions } = InDb()
-    // get the component
 
     const componentVersions =
         versions.find((o) => o.componentFullName === foundComponent.fullName)

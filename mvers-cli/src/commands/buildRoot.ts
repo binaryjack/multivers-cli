@@ -2,7 +2,7 @@
 
 import { Command } from 'commander'
 
-import { build } from '../features/builder/build.js'
+import { loopProjectFiles } from '../features/builder/loopProjectFiles.js'
 import { currentExecturingDir } from './commandsInit.js'
 
 export const buildCommand = (cmd: Command) => {
@@ -12,6 +12,8 @@ export const buildCommand = (cmd: Command) => {
             'optional, provide a base path otherwise it will take the rooth project path where you invoke the tool'
         )
         .action((options) =>
-            console.log(build(options.basePath ?? currentExecturingDir))
+            console.log(
+                loopProjectFiles(options.basePath ?? currentExecturingDir)
+            )
         )
 }

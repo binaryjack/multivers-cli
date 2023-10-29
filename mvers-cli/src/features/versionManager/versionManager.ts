@@ -16,7 +16,6 @@ export const versionManager = (
     const foundComponent = getComponent(component, searchWhere)
     if (!foundComponent) return
 
-    // build the dependency tree
     const { dependencyTree } = dependencyBuilder(foundComponent)
 
     const flattenedTree = flattentree(dependencyTree, foundComponent)

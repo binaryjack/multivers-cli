@@ -79,3 +79,9 @@ export interface IVersionFolders {
     path: string
     content: IVersionContent[]
 }
+
+export interface IPrepareImportsToReplace {
+    replaceBy: string
+    originalImport?: string
+    targetCompoment: string
+}

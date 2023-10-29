@@ -6,7 +6,7 @@ import {
     getFullComponentPahthFromSrc,
     getFullComponentPath,
     getPathList,
-} from '../arrayParsers/init.js'
+} from '../arrayParsers/getPathList.js'
 import InDb from '../db/index.js'
 import { asVersion } from '../stringParsers/init.js'
 

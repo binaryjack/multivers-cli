@@ -42,5 +42,3 @@ export const InDb = () => {
         getFHierarchies,
     }
 }
-
-//module.exports = { InDb }

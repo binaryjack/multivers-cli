@@ -1,3 +1,8 @@
-import { clearVersionsProjectFiles } from './clearVersionsProjectFiles.js'
+import { clearVersion } from './clearVersion.js'
+import { getFilesVersionsAndClear } from './getFilesVersionsAndClear.js'
 
-export default clearVersionsProjectFiles
+const clearVersions = () => {
+    return { clearVersion, getFilesVersionsAndClear }
+}
+
+export default clearVersions

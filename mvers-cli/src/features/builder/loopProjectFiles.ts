@@ -5,9 +5,10 @@ import { InDb } from '../db/db.js'
 import { saveFiles } from '../db/saveFiles.js'
 import { dependenciesParser } from '../dependenciesParser/dependenciesParser.js'
 import filesManager from '../filesManager/index.js'
+import { ProgressBar } from '../progress/progress.js'
 import { recursFiles } from './recursFile.js'
 
-export const build = (root: string, overwrite?: boolean) => {
+export const loopProjectFiles = (root: string, overwrite?: boolean) => {
     setGlobalRoot(root)
 
     overwrite && clearFiles(global.rootDirectory)
@@ -16,20 +17,14 @@ export const build = (root: string, overwrite?: boolean) => {
     const { countFilesInDirectory } = filesManager()
 
     const count = countFilesInDirectory(global.rootDirectory) ?? 0
-    //const { start, stop, info } = progress()
+    const pbar = new ProgressBar(25, count)
 
-    // start(count)
-    const collectedFiles = recursFiles(global.rootDirectory)
-    //stop()
+    const collectedFiles = recursFiles(global.rootDirectory, pbar)
 
     for (const file of collectedFiles) {
         addItem(files, file)
     }
 
-    // info('Process finished')
-
     saveFiles(files)
     dependenciesParser()
 }
-
-///module.export = { build }

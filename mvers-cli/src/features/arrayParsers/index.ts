@@ -2,16 +2,17 @@
 
 import { buildDependencyPath } from './buildDependencyPath.js'
 import { buildPath } from './buildPath.js'
+import { buildPathLeftOffset } from './buildPathLeftOffset.js'
 import { buildPathOffset } from './buildPathOffset.js'
 import { buildVersionPath } from './buildVersionPath.js'
+import { getFullComponentPath } from './getFullComponentPath.js'
+import { getFullComponentPathFromSrc } from './getFullComponentPathFromSrc.js'
 import { getLastItem } from './getLastItem.js'
-import { insertInPath } from './insertInPath.js'
-import { mergePathToImport } from './mergePathToImport.js'
+import { getPathList } from './getPathList.js'
 import { offsetPathRight } from './offsetPathRight.js'
 import { trimFromSrcDirectory } from './trimFromSrcDirectory.js'
 import { trimImportPath } from './trimImportPath.js'
 
-//https://js2ts.com/
 const arrayParser = () => {
     return {
         trimFromSrcDirectory,
@@ -22,10 +23,10 @@ const arrayParser = () => {
         buildPath,
         buildPathOffset,
         offsetPathRight,
-        insertInPath,
-        mergePathToImport,
+        getPathList,
+        getFullComponentPathFromSrc,
+        getFullComponentPath,
+        buildPathLeftOffset,
     }
 }
 export default arrayParser
-
-//module.exports = { arrayParser }

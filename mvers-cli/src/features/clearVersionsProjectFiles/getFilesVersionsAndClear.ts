@@ -3,7 +3,7 @@ import { getComponent } from '../db/getComponent.js'
 import { getVersionNumber } from '../db/getVersionNumber.js'
 import { clearVersion } from './clearVersion.js'
 
-export const clearVersionsProjectFiles = (
+export const getFilesVersionsAndClear = (
     root: string,
     component: string,
     searchWhere: string,
@@ -11,7 +11,6 @@ export const clearVersionsProjectFiles = (
 ) => {
     setGlobalRoot(root)
 
-    // get the component
     const foundComponent = getComponent(component, searchWhere)
     if (!foundComponent) return
 

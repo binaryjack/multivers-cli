@@ -1,3 +1,8 @@
-import { build } from './build.js'
+import { loopProjectFiles } from './loopProjectFiles.js'
+import { recursFiles } from './recursFile.js'
 
-export default build
+const builder = () => {
+    return { loopProjectFiles, recursFiles }
+}
+
+export default builder
