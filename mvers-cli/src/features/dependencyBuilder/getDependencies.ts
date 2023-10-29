@@ -1,7 +1,7 @@
 import { IDependency, IDependencyGraph } from '../../models/interop.js'
 import { buildDependencyPath } from '../arrayParsers/buildDependencyPath.js'
 import { InDb } from '../db/db.js'
-import { errorTrace } from './errorTrace.js'
+import { errMsg } from '../errors/helpers.js'
 import { nextId } from './nextId.js'
 
 export const getDependencies = (
@@ -48,6 +48,6 @@ export const getDependencies = (
 
         return outputGraph
     } catch (e: any) {
-        errorTrace(`getDependencies.error: `, e.message)
+        errMsg(`getDependencies`, e.message)
     }
 }

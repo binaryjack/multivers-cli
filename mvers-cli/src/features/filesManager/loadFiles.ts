@@ -1,5 +1,7 @@
 import fs from 'fs'
 
+import { errMsg } from '../errors/helpers.js'
+
 export const loadFiles = (fileName: string) => {
     try {
         if (fs.existsSync(fileName)) {
@@ -12,7 +14,7 @@ export const loadFiles = (fileName: string) => {
             return []
         }
     } catch (err) {
-        console.log(err)
+        errMsg('loadFiles', err)
     }
     return []
 }

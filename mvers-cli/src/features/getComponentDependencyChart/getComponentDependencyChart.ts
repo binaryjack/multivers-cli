@@ -1,9 +1,9 @@
-import chalk from 'chalk'
 import fs from 'fs'
 
 import { setGlobalRoot } from '../../helpers/utils.js'
 import { getComponent } from '../db/getComponent.js'
 import { dependencyBuilder } from '../dependencyBuilder/dependencyBuilder.js'
+import { infoMsg } from '../errors/helpers.js'
 import { stringParsers } from '../stringParsers/stringParsers.js'
 
 export const getComponentDependencyChart = (
@@ -41,13 +41,12 @@ export const getComponentDependencyChart = (
         }
     }
     console.clear()
-    console.log(chalk.greenBright(`Dependency process finished`))
+    infoMsg('getComponentDependencyChart', `Dependency process finished`)
 
     let outputList = dependencyTree
         .map((row) => {
             const leftId = row.rootId
             const rightId = row.depId
-            console.log('')
             const rootElement = `${leftId}[${row.root.file.name}]`
             const dependencyElement = `${rightId}[${row.dep.file.name}]`
 
@@ -108,10 +107,9 @@ export const getComponentDependencyChart = (
     }
 
     fs.writeFileSync(outputFileName, output, 'utf-8')
-    console.clear()
-    console.log(
-        chalk.greenBright(
-            `Process Complete - Output File: ", ${outputFileName}`
-        )
+
+    infoMsg(
+        'getComponentDependencyChart',
+        `Process Complete - Output File: ", ${outputFileName}`
     )
 }

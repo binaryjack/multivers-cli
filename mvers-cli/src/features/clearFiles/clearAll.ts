@@ -1,9 +1,9 @@
-import chalk from 'chalk'
 import fs from 'fs'
 import yesno from 'yesno'
 
+import { errMsg } from '../errors/helpers.js'
 import { getAllFilesNoSkip } from '../filesManager/getAllFilesNoSkip.js'
-import progress from '../progress/index.js'
+import { ProgressBar } from '../progress/progress.js'
 
 export const clearAll = async (folder: string) => {
     const ok = await yesno({
@@ -18,25 +18,21 @@ export const clearAll = async (folder: string) => {
     const files = getAllFilesNoSkip(folder)
     const filesCount = files.length
 
-    const { start, stop, incr } = progress()
-    start(filesCount)
+    const pbar = new ProgressBar(25, filesCount)
     const deletedFiles = []
 
     for (const f of files) {
-        incr(`deleting => ${f}`)
+        pbar.increment(`deleting => ${f}`)
 
         if (fs?.existsSync(f)) {
             try {
                 fs?.unlinkSync(f)
                 deletedFiles.push(f)
             } catch (e: any) {
-                console.log(
-                    chalk.red(`ERROR: ", ${e.message}! cannot delete ${f}`)
-                )
+                errMsg('clearAll', `ERROR: ", ${e.message}! cannot delete ${f}`)
             }
         }
     }
-    stop()
     if (deletedFiles.length === filesCount)
         fs.rmSync(folder, { recursive: true, force: true })
 }

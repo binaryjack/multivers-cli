@@ -1,0 +1,28 @@
+{
+  "notProjectImport": [
+    "@",
+    "react",
+    "reportWebVitals"
+  ],
+  "statingNewVersionFrom": 2,
+  "skipDirectories": [
+    "node_modules",
+    ".git",
+    "versions",
+    "testcafe",
+    ".vscode",
+    "public",
+    "deploy_env_files",
+    "debug_sqli",
+    "coverage",
+    ".vs",
+    "screenshots",
+    "reporter"
+  ],
+  "takeOnlyDirectories": [
+    "src"
+  ],
+  "skipImportPaths": [
+    "shared/components"
+  ]
+}

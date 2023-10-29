@@ -5,7 +5,6 @@ import { InDb } from '../db/db.js'
 import { saveFiles } from '../db/saveFiles.js'
 import { dependenciesParser } from '../dependenciesParser/dependenciesParser.js'
 import filesManager from '../filesManager/index.js'
-import progress from '../progress/index.js'
 import { recursFiles } from './recursFile.js'
 
 export const build = (root: string, overwrite?: boolean) => {
@@ -17,17 +16,17 @@ export const build = (root: string, overwrite?: boolean) => {
     const { countFilesInDirectory } = filesManager()
 
     const count = countFilesInDirectory(global.rootDirectory) ?? 0
-    const { start, stop, info } = progress()
+    //const { start, stop, info } = progress()
 
-    start(count)
+    // start(count)
     const collectedFiles = recursFiles(global.rootDirectory)
-    stop()
+    //stop()
 
     for (const file of collectedFiles) {
         addItem(files, file)
     }
 
-    info('Process finished')
+    // info('Process finished')
 
     saveFiles(files)
     dependenciesParser()

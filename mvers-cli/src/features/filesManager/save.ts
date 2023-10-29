@@ -1,5 +1,7 @@
 import fs from 'fs'
 
+import { errMsg } from '../errors/helpers.js'
+
 export const save = (
     fileName: string,
     backupfunction: (stamp: string) => string,
@@ -16,6 +18,6 @@ export const save = (
         }
         fs.writeFileSync(fileName, JSON.stringify(data, null, 2))
     } catch (err: any) {
-        console.log(err)
+        errMsg('save', err)
     }
 }

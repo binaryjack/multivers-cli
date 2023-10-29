@@ -1,8 +1,7 @@
-import chalk from 'chalk'
-
 import { setGlobalRoot } from '../../helpers/utils.js'
 import { InDb } from '../db/db.js'
 import { getComponent } from '../db/getComponent.js'
+import { errMsg, infoMsg, warnMsg } from '../errors/helpers.js'
 
 export const getVersions = (
     root: string,
@@ -15,7 +14,7 @@ export const getVersions = (
     // get the component
     const foundComponent = getComponent(componentName, searchWhere)
     if (!foundComponent) {
-        console.log(chalk.redBright(`No component found: ${componentName}`))
+        errMsg('getVersions', `No component found: ${componentName}`)
         return
     }
 
@@ -23,10 +22,9 @@ export const getVersions = (
         (o) => o.componentFullName === foundComponent.fullName
     )
     if (!componentVersion) {
-        console.log(
-            chalk.redBright(
-                `Version file not found for ${foundComponent.file.name}`
-            )
+        errMsg(
+            'getVersions',
+            `Version file not found for ${foundComponent.file.name}`
         )
         return
     }
@@ -45,19 +43,17 @@ export const getVersions = (
         })
 
     if (currentV?.length === 0) {
-        console.log(
-            chalk.yellowBright(
-                `No versions found for ${foundComponent.file.name} `
-            )
+        warnMsg(
+            'getVersions',
+            `No versions found for ${foundComponent.file.name} `
         )
         return
     }
 
-    console.log(
-        chalk.yellowBright(
-            `Current versions for: ${
-                foundComponent.file.name
-            } are:  ${currentV.join(', ')}`
-        )
+    infoMsg(
+        'getVersions',
+        `Current versions for: ${
+            foundComponent.file.name
+        } are:  ${currentV.join(', ')}`
     )
 }

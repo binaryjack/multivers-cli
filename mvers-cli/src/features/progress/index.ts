@@ -1,3 +1,3 @@
-import { progress } from './progress.js'
+import { ProgressBar } from './progress.js'
 
-export default progress
+export default ProgressBar

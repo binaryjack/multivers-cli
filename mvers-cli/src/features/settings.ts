@@ -1,3 +1,7 @@
+import fs from 'fs'
+
+import { localSettingsName } from './constants.js'
+
 const settings = (): {
     notProjectImport: string[]
     statingNewVersionFrom: number
@@ -5,6 +9,12 @@ const settings = (): {
     takeOnlyDirectories: string[]
     skipImportPaths: string[]
 } => {
+    const settingsname = `${global.rootDirectory}\\${localSettingsName}`
+
+    if (fs.existsSync(settingsname)) {
+        return JSON.parse(fs.readFileSync(settingsname, 'utf-8'))
+    }
+
     const statingNewVersionFrom: number = 2
     const notProjectImport: string[] = ['@', 'react', 'reportWebVitals']
     const skipImportPaths: string[] = ['shared/components']

@@ -1,5 +1,5 @@
 import { IDependencyGraph } from '../../models/interop.js'
-import { errorTrace } from './errorTrace.js'
+import { errMsg } from '../errors/helpers.js'
 
 // gets the next ID
 export const nextId = (
@@ -31,7 +31,7 @@ export const nextId = (
         //trace('nextId output:', outputId)
         return outputId
     } catch (e: any) {
-        errorTrace(`nextId.error: `, e.message)
+        errMsg(`nextId`, e.message)
         return -1
     }
 }

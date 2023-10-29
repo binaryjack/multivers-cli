@@ -5,6 +5,8 @@ import { clearCommand } from './commands/clearFiles.js'
 import { clearVCommand } from './commands/clearVersion.js'
 import { mainProgram } from './commands/commandsInit.js'
 import { currentVCommand } from './commands/getCurrentVersion.js'
+import { initConfig } from './commands/initLocalSettings.js'
+import { testProgress } from './commands/testProgress.js'
 import { updateCommand } from './commands/updateFiles.js'
 import { versionSwitchCommand } from './commands/versionSwitch.js'
 
@@ -16,5 +18,7 @@ currentVCommand(mainProgram)
 clearVCommand(mainProgram)
 clearCommand(mainProgram)
 buildCommand(mainProgram)
+initConfig(mainProgram)
+testProgress(mainProgram)
 
 mainProgram.parse()

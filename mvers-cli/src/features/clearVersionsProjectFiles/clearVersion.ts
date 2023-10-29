@@ -1,8 +1,9 @@
-import chalk from 'chalk'
 import fs from 'fs'
 
 import { buildPath } from '../arrayParsers/buildPath.js'
 import InDb from '../db/index.js'
+import { errMsg } from '../errors/helpers.js'
+import { ProgressBar } from '../progress/progress.js'
 
 export const clearVersion = (componentName: string, version: number) => {
     const { versions, flatHierarchies } = InDb()
@@ -19,7 +20,10 @@ export const clearVersion = (componentName: string, version: number) => {
 
     const versionFolderName = `V${version}`
 
+    const pbar = new ProgressBar(25, componentRef.dependencies.length)
+
     for (const v of componentRef.dependencies) {
+        pbar.increment(`clearVersion - current file: ${v.fullName}`)
         const tmpComponent = componentHierarchiesRef.dependencies.find(
             (o) => o.component?.fullName === v.fullName
         )
@@ -35,7 +39,7 @@ export const clearVersion = (componentName: string, version: number) => {
             try {
                 fs?.rmSync(versionFolder, { recursive: true, force: true })
             } catch (e: any) {
-                console.log(chalk.red(`ERROR: ", ${e.message}!`))
+                errMsg('clearVersion', `ERROR: ", ${e.message}!`)
                 return []
             }
         }

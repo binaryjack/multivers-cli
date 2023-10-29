@@ -3,6 +3,7 @@ import cliProgress from 'cli-progress'
 import fs from 'fs'
 
 import { IExistingVersion, IVersionContent } from '../../models/interop.js'
+import { errMsg } from '../errors/helpers.js'
 
 export const generateVersion = (
     filesCollection: IExistingVersion[],
@@ -62,11 +63,7 @@ export const generateVersion = (
                     try {
                         fs?.unlinkSync(targetPath)
                     } catch (e: any) {
-                        console.log(
-                            chalk.red(
-                                `ERROR: ", ${e.message}! cannot delete ${targetPath}`
-                            )
-                        )
+                        errMsg('', ` ${e.message}! cannot delete ${targetPath}`)
                     }
                 }
             }

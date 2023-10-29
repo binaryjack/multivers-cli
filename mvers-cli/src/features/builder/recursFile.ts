@@ -3,18 +3,17 @@ import fs from 'fs'
 import { IFile } from '../../models/interop.js'
 import { trimFromSrcDirectory } from '../arrayParsers/trimFromSrcDirectory.js'
 import { skipDirectory } from '../filesManager/skipDirectory.js'
-import progress from '../progress/index.js'
 import { getExtension } from '../stringParsers/getExtension.js'
 import { splitAndTrim } from '../stringParsers/splitAndTrim.js'
 
 export const recursFiles = (path: string, output: IFile[] = []): IFile[] => {
     if (skipDirectory(path)) return output
-    const { incr } = progress()
-    incr(path)
+    // const { incr } = progress()
+    // incr(path)
 
     const fileList = fs.readdirSync(path)
     for (const file of fileList) {
-        incr(file)
+        // inc§(file)
 
         const currentFile = `${path}\\${file}`
         if (fs.statSync(currentFile).isDirectory()) {
