@@ -1,53 +1,52 @@
 import fs from 'fs'
 
 import { IExistingVersion } from '../../models/interop.js'
-import { buildVersionPath } from '../arrayParsers/buildVersionPath.js'
+import { getRelativeDottedPath } from '../arrayParsers/buildPathOffset.js'
+import {
+    getFullComponentPahthFromSrc,
+    getFullComponentPath,
+    getPathList,
+} from '../arrayParsers/init.js'
 import InDb from '../db/index.js'
+import { asVersion } from '../stringParsers/init.js'
 
 export const updateImports = (
     uniqueFileList: IExistingVersion[],
     componentName: string,
     version: number
 ) => {
-    const { flatHierarchies, versions, files } = InDb()
+    //===================== ROOT COMPONENT ====================================
+    const { flatHierarchies, getFHierarchies, versions, files, getVComponent } =
+        InDb()
     const existingVersion = []
-    const componentRef = versions.find(
-        (o) => o.componentFullName === componentName
-    )
     const errors = []
-    const componentHierarchiesRef = flatHierarchies.find(
-        (o) => o.componentFullName === componentName
-    )
+    // version name
+    const versionName = asVersion(version)
+    const componentRef = getVComponent(componentName)
+    const componentHierarchiesRef = getFHierarchies(componentName)
 
-    if (!componentHierarchiesRef) return
+    if (!componentHierarchiesRef || !componentRef) return
+    // as version name
 
-    const versionName = `V${version}`
+    const pathFromSrc = getPathList(componentHierarchiesRef.componentFullName)
 
-    const pathFromSrc = componentHierarchiesRef.componentFullName.split('\\')
+    //===================== ROOT COMPONENT ====================================
 
     for (const dep of componentHierarchiesRef.dependencies) {
+        //===================== ROOT COMPONENT DEPENDENCY ====================================
         const currentComponent = dep.component
 
         if (!currentComponent) continue
 
-        const componentPath = `${global.rootDirectory}\\${buildVersionPath(
-            currentComponent.filePathFromSrc,
+        const componentPath = getFullComponentPath(currentComponent, version)
+        const rootComponentPathOffset2 = getFullComponentPahthFromSrc(
+            currentComponent,
             version
-        )}\\${currentComponent.file.name}.${currentComponent.file.extension}`
+        )
 
-        // const rootComponentPathOffset = buildPathOffset(
-        //     currentComponent.filePathFromSrc,
-        //     1
-        // )
+        const foldersCountFromSrc = rootComponentPathOffset2.split('\\')?.length
 
-        // const rootComponentPathOffset2 = `${buildPathLeftOffset(
-        //     currentComponent.filePathFromSrc,
-        //     1
-        // )}\\${versionName}`
-
-        // const foldersCountFromSrc = rootComponentPathOffset2.split('\\')?.length
-
-        // const relativePathToSrc = getRelativeDottedPath(foldersCountFromSrc)
+        const relativePathToSrc = getRelativeDottedPath(foldersCountFromSrc)
 
         let content = fs.readFileSync(componentPath, 'utf8')
         const fileDependencies = content.match(
@@ -55,6 +54,7 @@ export const updateImports = (
         )
 
         const references = []
+        //===================== ROOT COMPONENT DEPENDENCY ====================================
 
         for (const cDep of currentComponent.dependencies) {
             if (cDep?.paths?.length === 0) continue

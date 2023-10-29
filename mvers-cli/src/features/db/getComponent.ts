@@ -1,6 +1,5 @@
-import chalk from 'chalk'
-
 import { IDependency } from '../../models/interop.js'
+import { errMsg, infoMsg } from '../errors/helpers.js'
 import { replaceAll } from '../stringParsers/replaceAll.js'
 import { InDb } from './db.js'
 
@@ -11,7 +10,7 @@ export const getComponent = (
     const { dependencies } = InDb()
 
     if (dependencies?.length === 0) {
-        console.log('dependencies are not set')
+        infoMsg('getComponent', 'dependencies are not set')
         return undefined
     }
 
@@ -28,16 +27,12 @@ export const getComponent = (
     })
 
     if (!foundComponent) {
-        console.log(
-            chalk.bgGreenBright(
-                `This object doesn't exists: ", ${componentName}`
-            )
+        errMsg(
+            'getComponent',
+            `This object doesn't exists: ", ${componentName}`
         )
         return undefined
     }
-    console.log(
-        chalk.greenBright(`Found object: ", ${foundComponent.fullName}`)
-    )
-
+    infoMsg('getComponent', `Found object: ", ${foundComponent.fullName}`)
     return foundComponent
 }

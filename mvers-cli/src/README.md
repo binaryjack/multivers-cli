@@ -50,3 +50,7 @@ Version manager tool
 -   `mvr flat -c home\pages\Home.tsx`
 
 -   mvr deps -b C:/Users/pianat/source/repos/customer-portal -c home\pages\Home.tsx -r
+
+-   mvr builder -b E:\Sources\multivers-cli\testversion\
+
+-mvr deps -b E:\Sources\multivers-cli\testversion\ -c core\components\comp1\Comp1.tsx

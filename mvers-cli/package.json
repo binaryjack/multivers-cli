@@ -19,10 +19,12 @@
         "!bin/**/*.test.js"
     ],
     "scripts": {
+        "dev:tsc2": "tsc --watch",
+        "dev:tsc": "tsc ./src/index.ts --watch",
         "dev": "npx ts-node ./src/index.ts",
         "f-builder": "ts-node ./src/index.ts && mvr builder -b 'C:/Users/pianat/source/repos/customer-portal'",
         "clean": "rimraf ./bin/ ./exec/",
-        "build": "npm run clean && tsc && npm i -g",
+        "build": "npm run clean && tsc --watch && npm i -g",
         "bundle": "npm run build && pkg . --out-dir ./exec/"
     },
     "devDependencies": {

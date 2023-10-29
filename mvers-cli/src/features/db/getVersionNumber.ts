@@ -1,3 +1,4 @@
+import { errMsg } from '../errors/helpers.js'
 import { InDb } from './db.js'
 
 export const getVersionNumber = (
@@ -19,6 +20,11 @@ export const getVersionNumber = (
             : existingVersionsNumbers.find(
                   (o) => o === parseInt(versionRequest)
               )
-
+    if (!requestedVersion) {
+        errMsg(
+            'getVersionNumber',
+            `no version found for ${getVersionNumber} have you setted a version for this component with "v-up" command ? `
+        )
+    }
     return requestedVersion
 }

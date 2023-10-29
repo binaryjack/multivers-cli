@@ -1,9 +1,9 @@
-import chalk from 'chalk'
 import fs from 'fs'
 
 import { IDependency, IExistingVersion } from '../../models/interop.js'
 import { buildPath } from '../arrayParsers/buildPath.js'
 import InDb from '../db/index.js'
+import { errMsg } from '../errors/helpers.js'
 import { getRootFolderContents } from './getRootFolderContents.js'
 import { getVersionsFolderContents } from './getVersionsFolderContents.js'
 
@@ -42,7 +42,10 @@ export const getExistingVersion = (component: IDependency) => {
         const componentProjectPath = `${global.rootDirectory}\\${componentBasePath}`
 
         if (!componentProjectPath) {
-            console.log('not exists ')
+            errMsg(
+                'getExistingVersion',
+                `No file exists in this path: ", ${componentProjectPath}!`
+            )
             continue
         }
 
@@ -62,10 +65,9 @@ export const getExistingVersion = (component: IDependency) => {
     const sortedExistingVersion = existingVersion.sort((a, b) => a.id - b.id)
 
     if (!fs?.existsSync(global.rootDirectory)) {
-        console.log(
-            chalk.red(
-                `ERROR: ", ${global.rootDirectory} does not exists please follow the usage instructions by typing mvers in the command line!`
-            )
+        errMsg(
+            'getExistingVersion',
+            `ERROR: ", ${global.rootDirectory} does not exists please follow the usage instructions by typing mvr in the command line`
         )
         return []
     }
@@ -75,7 +77,7 @@ export const getExistingVersion = (component: IDependency) => {
         try {
             fs?.unlinkSync(outputFileName)
         } catch (e: any) {
-            console.log(chalk.red(`ERROR: ", ${e.message}!`))
+            errMsg('getExistingVersion', `ERROR: ", ${e.message}!`)
             return []
         }
     }

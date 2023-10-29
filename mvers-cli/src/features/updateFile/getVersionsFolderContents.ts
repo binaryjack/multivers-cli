@@ -5,17 +5,17 @@ import { IVersionContent, IVersionFolders } from '../../models/interop.js'
 export const getVersionsFolderContents = (path: string): IVersionFolders => {
     const versionDirectories = fs
         .readdirSync(path, { withFileTypes: true })
-        .filter((dirent) => dirent.isDirectory())
-        .filter((dirent) => /^V\d+$/.test(dirent.name))
-        .map((dirent) => dirent.name)
+        .filter((d1) => d1.isDirectory())
+        .filter((d) => /^V\d+$/.test(d.name))
+        .map((d) => d.name)
 
     const output: IVersionContent[] = []
 
     for (const f of versionDirectories) {
         const files = fs
             .readdirSync(path, { withFileTypes: true })
-            .filter((dirent) => dirent.isFile())
-            .map((dirent) => dirent.name)
+            .filter((d) => d.isFile())
+            .map((d) => d.name)
 
         output.push({
             folder: f,

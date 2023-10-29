@@ -5,6 +5,10 @@ import {
     IVersion,
 } from '../../models/interop.js'
 import { fileManager } from '../filesManager/filesManager.js'
+import {
+    getComponentHierarchies,
+    getVersionnedComponent,
+} from '../stringParsers/init.js'
 
 export const InDb = () => {
     const {
@@ -25,12 +29,17 @@ export const InDb = () => {
         ...loadFiles(flatHierarchyTreeKeyName),
     ]
 
+    const getVComponent = getVersionnedComponent(versions)
+    const getFHierarchies = getComponentHierarchies(flatHierarchies)
+
     // will keep current version as backup
     return {
         files,
         versions,
+        getVComponent,
         dependencies,
         flatHierarchies,
+        getFHierarchies,
     }
 }
 

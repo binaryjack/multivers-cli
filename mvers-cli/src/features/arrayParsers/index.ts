@@ -26,7 +26,6 @@ const arrayParser = () => {
         mergePathToImport,
     }
 }
-
 export default arrayParser
 
 //module.exports = { arrayParser }
