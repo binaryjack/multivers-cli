@@ -2,20 +2,26 @@ import fs from 'fs'
 
 import { localSettingsName } from './constants.js'
 
+/**
+ * This is the settings object.
+ * Note: if a local setting file is found, it will replace this values during the tool usage.
+ * @returns settings object
+ */
 const settings = (): {
     notProjectImport: string[]
-    statingNewVersionFrom: number
+    startingNewVersionFrom: number
     skipDirectories: string[]
     takeOnlyDirectories: string[]
     skipImportPaths: string[]
+    skipFiles: string[]
 } => {
-    const settingsname = `${global.rootDirectory}\\${localSettingsName}`
+    const settingsName = `${global.rootDirectory}\\${localSettingsName}`
 
-    if (fs.existsSync(settingsname)) {
-        return JSON.parse(fs.readFileSync(settingsname, 'utf-8'))
+    if (fs.existsSync(settingsName)) {
+        return JSON.parse(fs.readFileSync(settingsName, 'utf-8'))
     }
 
-    const statingNewVersionFrom: number = 2
+    const startingNewVersionFrom: number = 2
     const notProjectImport: string[] = ['@', 'react', 'reportWebVitals']
     const skipImportPaths: string[] = ['shared/components']
     const skipDirectories: string[] = [
@@ -32,14 +38,30 @@ const settings = (): {
         'screenshots',
         'reporter',
     ]
+    const skipFiles: string[] = [
+        '.eslintrc.cjs',
+        '.gitignore',
+        'index.html',
+        'mversconfig.json',
+        'package-lock.json',
+        'package.json',
+        'README.md',
+        'debug_sqli',
+        'tsconfig.json',
+        'tsconfig.node.json',
+        'screenshots',
+        'vite.config.ts',
+        'vite-env.d.ts',
+    ]
     const takeOnlyDirectories: string[] = ['src']
 
     return {
         notProjectImport,
-        statingNewVersionFrom,
+        startingNewVersionFrom,
         skipDirectories,
         takeOnlyDirectories,
         skipImportPaths,
+        skipFiles,
     }
 }
 

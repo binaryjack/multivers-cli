@@ -49,8 +49,8 @@ export interface IHierarchyDependency {
     component?: IDependency
     // represents the IHierarchyDependency.ID of related parents
     parents: number[]
-    // represents the IHierarchyDependency.ID of related childrens
-    childs: number[]
+    // represents the IHierarchyDependency.ID of related children
+    children: number[]
 }
 
 export interface IFlatHierarchy {
@@ -83,5 +83,5 @@ export interface IVersionFolders {
 export interface IPrepareImportsToReplace {
     replaceBy: string
     originalImport?: string
-    targetCompoment: string
+    targetComponent: string
 }

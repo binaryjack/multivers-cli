@@ -2,6 +2,11 @@ import fs from 'fs'
 
 import { IVersionContent, IVersionFolders } from '../../models/interop.js'
 
+/**
+ * Gets the Version Folder Contents
+ * @param path string
+ * @returns IVersionFolders
+ */
 export const getVersionsFolderContents = (path: string): IVersionFolders => {
     const versionDirectories = fs
         .readdirSync(path, { withFileTypes: true })

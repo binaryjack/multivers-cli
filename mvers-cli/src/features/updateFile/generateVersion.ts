@@ -1,10 +1,17 @@
-import chalk from 'chalk'
-import cliProgress from 'cli-progress'
 import fs from 'fs'
 
 import { IExistingVersion, IVersionContent } from '../../models/interop.js'
 import { errMsg } from '../errors/helpers.js'
+import { ProgressBar } from '../progress/progress.js'
 
+/**
+ * Will generate (Copy/Clone/Create) files / folders for the planed versions
+ * @param filesCollection  IExistingVersion[]
+ * @param requestedVersion number
+ * @param maxCount number
+ * @param overwrite boolean
+ * @returns  IVersionContent[] | undefined
+ */
 export const generateVersion = (
     filesCollection: IExistingVersion[],
     requestedVersion: number,
@@ -14,17 +21,6 @@ export const generateVersion = (
     if (!Array.isArray(filesCollection) || !requestedVersion || maxCount === 0)
         return
 
-    const b1 = new cliProgress.SingleBar({
-        format:
-            'CLI Progress |' +
-            chalk.greenBright('{bar}') +
-            '| {percentage}% || {value}/{total} Chunks || Speed: {speed}',
-        barCompleteChar: '\u2588',
-        barIncompleteChar: '\u2591',
-        forceRedraw: true,
-        hideCursor: true,
-    })
-
     const counters = filesCollection.reduce((acc, currentItem) => {
         const count = currentItem?.rootContents?.files?.length
         if (typeof acc === 'object') {
@@ -33,13 +29,10 @@ export const generateVersion = (
         return acc + count
     }, 0)
 
-    b1.start((counters * filesCollection.length) / 100, 0, {
-        speed: 'N/A',
-    })
+    const pbar = new ProgressBar(25, counters)
 
     const output: IVersionContent[] = []
 
-    let inc = 0
     for (const f of filesCollection) {
         const vFolderName = `${f.rootContents.folder}\\V${requestedVersion}`
 
@@ -51,8 +44,7 @@ export const generateVersion = (
             files: [],
         }
 
-        inc++
-        b1.increment(inc, { payload: `=> ${vFolderName}` })
+        pbar.increment(`=> ${vFolderName}`)
 
         for (const fToCopy of f.rootContents.files) {
             const originPath = `${f.rootContents.folder}\\${fToCopy}`
@@ -63,7 +55,10 @@ export const generateVersion = (
                     try {
                         fs?.unlinkSync(targetPath)
                     } catch (e: any) {
-                        errMsg('', ` ${e.message}! cannot delete ${targetPath}`)
+                        errMsg(
+                            'generateVersion',
+                            ` ${e.message}! cannot delete ${targetPath}`
+                        )
                     }
                 }
             }
@@ -74,7 +69,6 @@ export const generateVersion = (
         }
         output.push(newFileOutputVersion)
     }
-    b1.stop()
 
     return output
 }

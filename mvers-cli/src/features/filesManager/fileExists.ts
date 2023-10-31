@@ -1,6 +1,9 @@
-import { replaceAll } from '../stringParsers/replaceAll.js'
+import { replaceAll } from '../helpers/replaceAll.js'
 import { getAllFilesNoSkip } from './getAllFilesNoSkip.js'
 
+/**
+ * Checks if file exists recursively
+ */
 export const fileExists = (root: string, path: string, fileName: string) => {
     try {
         const pathToSearch = replaceAll(`${root}\\src\\${path}`, '/', '\\')

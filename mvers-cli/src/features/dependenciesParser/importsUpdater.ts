@@ -1,10 +1,13 @@
 import fs from 'fs'
 
 import { IPrepareImportsToReplace } from '../../models/interop.js'
-import { buildPathLeftOffset } from '../arrayParsers/buildPathLeftOffset.js'
 import { InDb } from '../db/db.js'
 import { saveDependencies } from '../db/saveDependencies.js'
+import { buildPathLeftOffset } from '../helpers/buildPathLeftOffset.js'
 
+/**
+ * Import Updater
+ */
 export const importsUpdater = () => {
     const { dependencies } = InDb()
 
@@ -15,14 +18,14 @@ export const importsUpdater = () => {
 
         const pathFromSrc = buildPathLeftOffset(item.filePathFromSrc, 1)
 
-        const isVersionnedMatch = RegExp(/\\V\d\\?/).exec(pathFromSrc)
+        const isVersionedMatch = RegExp(/\\V\d\\?/).exec(pathFromSrc)
 
-        const isVersionned = !!isVersionnedMatch
-        // if is not a versionned component then skip
-        if (!isVersionned) continue
+        const isVersioned = !!isVersionedMatch
+        // if is not a versioned component then skip
+        if (!isVersioned) continue
 
-        const filewithPath = `${global.rootDirectory}\\${item.fullName}`
-        let content = fs.readFileSync(filewithPath, 'utf8')
+        const fileWithPath = `${global.rootDirectory}\\${item.fullName}`
+        let content = fs.readFileSync(fileWithPath, 'utf8')
 
         const fileImports = content.match(
             /(import.*from.'.*';?)|(import.*'.*';?)/gm
@@ -44,7 +47,7 @@ export const importsUpdater = () => {
             )}'`
             newImports.push({
                 replaceBy: importTxt,
-                targetCompoment: componentName,
+                targetComponent: componentName,
             })
         }
 
@@ -52,7 +55,7 @@ export const importsUpdater = () => {
 
         for (const nImp of newImports) {
             const originalImport = fileImports.find((o) =>
-                o.includes(nImp.targetCompoment)
+                o.includes(nImp.targetComponent)
             )
             if (!originalImport) continue
             nImp.originalImport = originalImport
@@ -63,7 +66,7 @@ export const importsUpdater = () => {
             content = content.replace(nImp.originalImport, nImp.replaceBy)
         }
 
-        fs.writeFileSync(filewithPath, content, 'utf8')
+        fs.writeFileSync(fileWithPath, content, 'utf8')
     }
     saveDependencies(dependencies)
 }

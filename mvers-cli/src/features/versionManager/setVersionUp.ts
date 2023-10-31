@@ -3,15 +3,21 @@ import {
     IDependencyVersion,
     IHierarchyDependency,
 } from '../../models/interop.js'
-import InDb from '../db/index.js'
+import { InDb } from '../db/db.js'
 import { saveVersions } from '../db/saveVersions.js'
 import settings from '../settings.js'
 
+/**
+ * Prepares the next version for the component
+ * @param flattenedTree IHierarchyDependency[]
+ * @param foundComponent IDependency
+ * @returns IDependencyVersion[]
+ */
 export const setVersionUp = (
     flattenedTree: IHierarchyDependency[],
     foundComponent: IDependency
-) => {
-    const { statingNewVersionFrom } = settings()
+): IDependencyVersion[] => {
+    const { startingNewVersionFrom } = settings()
 
     const versionOutput: IDependencyVersion[] = []
 
@@ -23,25 +29,25 @@ export const setVersionUp = (
 
     for (const f of flattenedTree) {
         //
-        const existigVersion = componentVersions.find(
+        const existingVersion = componentVersions.find(
             (o) => o.fullName === f.component?.fullName
         )
-        if (!existigVersion) {
+        if (!existingVersion) {
             versionOutput.push({
                 id: f.id,
                 fullName: f.component?.fullName ?? '',
-                versions: [statingNewVersionFrom],
+                versions: [startingNewVersionFrom],
             })
         } else {
-            let next = statingNewVersionFrom
-            if (existigVersion.versions?.length > 0) {
-                next = Math.max(...existigVersion.versions.map((o) => o)) + 1
+            let next = startingNewVersionFrom
+            if (existingVersion.versions?.length > 0) {
+                next = Math.max(...existingVersion.versions.map((o) => o)) + 1
             }
 
             versionOutput.push({
-                id: existigVersion.id,
-                fullName: existigVersion.fullName,
-                versions: [...existigVersion.versions, next],
+                id: existingVersion.id,
+                fullName: existingVersion.fullName,
+                versions: [...existingVersion.versions, next],
             })
         }
     }

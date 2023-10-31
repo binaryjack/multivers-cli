@@ -1,3 +1,9 @@
+/**
+ * Dependency Counter
+ * @param dependency
+ * @param count
+ * @returns
+ */
 export const countDependencies = (dependency: any, count = 0): number => {
     count += dependency?.dependencies?.length
     for (const c of dependency.dependencies) {

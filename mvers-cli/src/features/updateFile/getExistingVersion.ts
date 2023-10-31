@@ -1,13 +1,20 @@
 import fs from 'fs'
 
 import { IDependency, IExistingVersion } from '../../models/interop.js'
-import { buildPath } from '../arrayParsers/buildPath.js'
-import InDb from '../db/index.js'
+import { InDb } from '../db/db.js'
 import { errMsg } from '../errors/helpers.js'
+import { buildPath } from '../helpers/buildPath.js'
 import { getRootFolderContents } from './getRootFolderContents.js'
 import { getVersionsFolderContents } from './getVersionsFolderContents.js'
 
-export const getExistingVersion = (component: IDependency) => {
+/**
+ * Gets the existing version
+ * @param component IDependency
+ * @returns IExistingVersion[] | undefined
+ */
+export const getExistingVersion = (
+    component: IDependency
+): IExistingVersion[] | undefined => {
     const existingVersion: IExistingVersion[] = []
     const { versions, flatHierarchies } = InDb()
 
@@ -20,7 +27,7 @@ export const getExistingVersion = (component: IDependency) => {
     )
 
     if (!componentRef?.dependencies || !componentHierarchiesRef?.dependencies)
-        return
+        return undefined
 
     for (const v of componentRef.dependencies) {
         const tmpComponent = componentHierarchiesRef.dependencies.find(

@@ -19,12 +19,9 @@
         "!bin/**/*.test.js"
     ],
     "scripts": {
-        "dev:tsc2": "tsc --watch",
-        "dev:tsc": "tsc ./src/index.ts --watch",
-        "dev": "npx ts-node ./src/index.ts",
-        "f-builder": "ts-node ./src/index.ts && mvr builder -b 'C:/Users/pianat/source/repos/customer-portal'",
+        "dev": "npm run clean && tsc --watch && npm i -g",
         "clean": "rimraf ./bin/ ./exec/",
-        "build": "npm run clean && tsc --watch && npm i -g",
+        "build": "npm run clean && tsc && npm i -g",
         "bundle": "npm run build && pkg . --out-dir ./exec/"
     },
     "devDependencies": {
@@ -42,8 +39,7 @@
         "@types/react": "^18.2.28",
         "boxen": "^7.1.1",
         "chalk": "^5.3.0",
-        "commander": "^11.0.0",
-        "yesno": "^0.4.0"
+        "commander": "^11.0.0"
     },
     "type": "module"
 }

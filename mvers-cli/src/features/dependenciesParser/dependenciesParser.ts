@@ -1,21 +1,23 @@
 import fs from 'fs'
 
 import { IDependency, IImports } from '../../models/interop.js'
-import arrayParser from '../arrayParsers/index.js'
-import { addItem } from '../db/addItem.js'
 import { InDb } from '../db/db.js'
 import { saveDependencies } from '../db/saveDependencies.js'
+import { trimImportPath } from '../helpers/trimImportPath.js'
 
+/**
+ * Dependencies parser
+ */
 export const dependenciesParser = () => {
-    const { files, dependencies } = InDb()
-    const { trimImportPath } = arrayParser()
+    const { files } = InDb()
 
+    const output: IDependency[] = []
     for (const file of files) {
         if (!file.fullName.toString().endsWith('.tsx')) {
             continue
         }
-        const filewithPath = `${global.rootDirectory}\\${file.fullName}`
-        const content = fs.readFileSync(filewithPath, 'utf8')
+        const fileWithPath = `${global.rootDirectory}\\${file.fullName}`
+        const content = fs.readFileSync(fileWithPath, 'utf8')
 
         const fileDependencies = content.match(
             /(import.*from.'.*';?)|(import.*'.*';?)/gm
@@ -37,7 +39,7 @@ export const dependenciesParser = () => {
             filePathFromSrc: file.filePathFromSrc,
             dependencies: depCollection,
         }
-        addItem(dependencies, dependency)
+        output.push(dependency)
     }
-    saveDependencies(dependencies)
+    saveDependencies(output)
 }

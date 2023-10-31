@@ -2,15 +2,22 @@ import { setGlobalRoot } from '../../helpers/utils.js'
 import { loopProjectFiles } from '../builder/loopProjectFiles.js'
 import { getComponent } from '../db/getComponent.js'
 import { getVersionNumber } from '../db/getVersionNumber.js'
-import {
-    dependenciesUpdater,
-    importsUpdater,
-} from '../dependenciesParser/dependenciesParser.js'
-import { errMsg, warnMsg } from '../errors/helpers.js'
+import { dependenciesUpdater } from '../dependenciesParser/dependenciesUpdater.js'
+import { importsUpdater } from '../dependenciesParser/importsUpdater.js'
+import { errMsg, infoMsg, warnMsg } from '../errors/helpers.js'
 import { checkIfExists } from './checkIfExists.js'
 import { generateVersion } from './generateVersion.js'
 import { getExistingVersion } from './getExistingVersion.js'
 
+/**
+ * Will create the versioned files and update all dependency files and imports
+ * @param root string
+ * @param componentFullName string
+ * @param searchWhere string
+ * @param version string
+ * @param overwrite boolean
+ * @returns void
+ */
 export const updateFiles = (
     root: string,
     componentFullName: string,
@@ -64,6 +71,11 @@ export const updateFiles = (
     loopProjectFiles(global.rootDirectory, true)
     // update the dependency file with the new file version
     dependenciesUpdater()
-
+    // update imports
     importsUpdater()
+
+    infoMsg(
+        'Updating files',
+        `Process Complete: you'll find the new versions under */[ComponentFolder]/V${requestedVersion}/[ComponentName].tsx `
+    )
 }

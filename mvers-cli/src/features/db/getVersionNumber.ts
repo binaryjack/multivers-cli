@@ -1,10 +1,16 @@
 import { errMsg } from '../errors/helpers.js'
 import { InDb } from './db.js'
 
+/**
+ * Gets the version number
+ * @param componentName string
+ * @param versionRequest string
+ * @returns  number | undefined
+ */
 export const getVersionNumber = (
     componentName: string,
     versionRequest: string
-) => {
+): number | undefined => {
     const { versions } = InDb()
 
     const componentRef = versions.find(

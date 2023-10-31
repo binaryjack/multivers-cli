@@ -1,0 +1,47 @@
+# Starter pipeline
+# Start with a minimal pipeline that you can customize to build and deploy your code.
+# Add steps that build, run tests, deploy, and more:
+# https://aka.ms/yaml
+
+stages:
+    - stage: mvers-cli_build_and_publish
+      displayName: Build and Publish mvers-cli
+      jobs:
+          - job: mvers-cli_build
+            displayName: Build mvers-cli
+            pool:
+                vmImage: 'ubuntu-latest'
+            workspace:
+                clean: all
+            steps:
+                - task: NodeTool@0
+                  inputs:
+                      versionSpec: '16.x'
+                  displayName: 'Install Node.js'
+
+                - task: npmAuthenticate@0
+                  inputs:
+                      workingFile: './.npmrc'
+
+                - script: npm install
+                  displayName: 'Install dependencies'
+
+                - script: npm run test
+                  displayName: 'Run tests'
+                  failOnStderr: true
+
+                - script: npm run build
+                  displayName: 'build NPM package'
+
+                - task: PowerShell@2
+                  displayName: 'Copy package.json'
+                  inputs:
+                      targetType: 'inline'
+                      script: 'Move-Item -Force $(Build.Repository.LocalPath)/package.publish.json $(Build.Repository.LocalPath)/dist/package.json'
+
+                - task: PublishPipelineArtifact@1
+                  displayName: 'Publish mvers-cli Artifacts'
+                  inputs:
+                      targetPath: '$(Build.Repository.LocalPath)/dist'
+                      artifact: 'mvers-cli'
+                      publishLocation: 'pipeline'

@@ -1,26 +1,34 @@
 import fs from 'fs'
-import yesno from 'yesno'
 
 import { errMsg } from '../errors/helpers.js'
 import { getAllFilesNoSkip } from '../filesManager/getAllFilesNoSkip.js'
 import { ProgressBar } from '../progress/progress.js'
 
-export const clearAll = async (folder: string) => {
-    await yesno({
-        question:
-            'This will remove all files and versions but not the project files produced with it, continue?',
-        invalid: function ({ question, defaultValue, yesValues, noValues }) {
-            process.stdout.write('\n Process aborted')
-            process.exit(1)
-        },
-    })
+/**
+ * Will clear mvers files
+ * @param folder
+ */
+export const clearAll = (folder: string) => {
+    const I = ''
+    // yesno({
+    //     question:
+    //         'This will remove all files and versions but not the project files produced with it, continue?',
+    //     yesValues: ['y', 'Y'],
+    //     noValues: ['n', 'N'],
+    // })
 
     const files = getAllFilesNoSkip(folder)
-    const filesCount = files.length
 
-    const pbar = new ProgressBar(25, filesCount)
+    deleteFiles(folder, files, true)
+}
+
+export const deleteFiles = (
+    folder: string,
+    files: string[],
+    keepFolder: boolean
+) => {
+    const pbar = new ProgressBar(25, files.length)
     const deletedFiles = []
-
     for (const f of files) {
         pbar.increment(`deleting => ${f}`)
 
@@ -33,6 +41,7 @@ export const clearAll = async (folder: string) => {
             }
         }
     }
-    if (deletedFiles.length === filesCount)
+    if (!keepFolder) return
+    if (deletedFiles.length === files.length)
         fs.rmSync(folder, { recursive: true, force: true })
 }

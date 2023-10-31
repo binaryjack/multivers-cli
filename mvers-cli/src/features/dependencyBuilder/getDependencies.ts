@@ -1,9 +1,17 @@
 import { IDependency, IDependencyGraph } from '../../models/interop.js'
-import { buildDependencyPath } from '../arrayParsers/buildDependencyPath.js'
 import { InDb } from '../db/db.js'
 import { errMsg } from '../errors/helpers.js'
+import { buildDependencyPath } from '../helpers/buildDependencyPath.js'
 import { nextId } from './nextId.js'
 
+/**
+ * Gets dependencies for flat mapping
+ * @param root
+ * @param rootId
+ * @param depId
+ * @param outputGraph
+ * @returns
+ */
 export const getDependencies = (
     root: IDependency,
     rootId = -1,
@@ -35,6 +43,7 @@ export const getDependencies = (
                 ) {
                     continue
                 }
+
                 outputGraph.push({
                     rootId: rootId,
                     depId: depId,

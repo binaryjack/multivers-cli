@@ -2,16 +2,22 @@ import fs from 'fs'
 
 import { errMsg } from '../errors/helpers.js'
 
+/**
+ * Saves the content to a file
+ * @param fileName
+ * @param backupFunction
+ * @param data
+ */
 export const save = (
     fileName: string,
-    backupfunction: (stamp: string) => string,
+    backupFunction: (stamp: string) => string,
     data: any
 ) => {
     try {
         const dte = new Date()
         const stamp = `${dte.getDate()}${dte.getHours()}${dte.getMinutes()}${dte.getMilliseconds()}`
         if (fs.existsSync(fileName)) {
-            fs.renameSync(fileName, backupfunction(stamp))
+            fs.renameSync(fileName, backupFunction(stamp))
         }
         if (fs.existsSync(fileName)) {
             fs.unlinkSync(fileName)

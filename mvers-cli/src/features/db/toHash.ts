@@ -1,3 +1,8 @@
+/**
+ * converts string to hash
+ * @param str
+ * @returns
+ */
 export const toHash = (str: string) => {
     if (str === '') return 0
     let hashString = 0

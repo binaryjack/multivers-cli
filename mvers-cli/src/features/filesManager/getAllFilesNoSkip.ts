@@ -3,6 +3,12 @@ import path from 'path'
 
 import { getAllFiles } from './getAllFiles.js'
 
+/**
+ * Gets All files Recursively NO RESTRICTION FROM SETTINGS
+ * @param directory
+ * @param files
+ * @returns
+ */
 export const getAllFilesNoSkip = (
     directory: string,
     files: string[] = []

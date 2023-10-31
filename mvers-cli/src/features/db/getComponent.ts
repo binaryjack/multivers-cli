@@ -1,8 +1,14 @@
 import { IDependency } from '../../models/interop.js'
 import { errMsg, infoMsg } from '../errors/helpers.js'
-import { replaceAll } from '../stringParsers/replaceAll.js'
+import { replaceAll } from '../helpers/replaceAll.js'
 import { InDb } from './db.js'
 
+/**
+ * Gets the component by it's name.
+ * @param componentName string
+ * @param searchWhere string
+ * @returns IDependency | undefined
+ */
 export const getComponent = (
     componentName: string,
     searchWhere: string

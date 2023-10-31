@@ -1,7 +1,13 @@
 import { IDependencyGraph } from '../../models/interop.js'
 import { errMsg } from '../errors/helpers.js'
 
-// gets the next ID
+/**
+ * gets the next ID
+ * @param components
+ * @param componentName
+ * @param id
+ * @returns
+ */
 export const nextId = (
     components: IDependencyGraph[],
     componentName: string,

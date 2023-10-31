@@ -3,14 +3,20 @@ import {
     IDependencyGraph,
     IHierarchyDependency,
 } from '../../models/interop.js'
-import InDb from '../db/index.js'
+import { InDb } from '../db/db.js'
 import { saveFlatHierarchies } from '../db/saveFlatHierarchies.js'
 import { newHierarchyDependency } from './newUniqueItem.js'
 
-export const flattentree = (
+/**
+ * Creates a flat lookup relation tree (relations parents <=> children)  representation for a component
+ * @param tree IDependencyGraph[]
+ * @param foundComponent IDependency
+ * @returns IHierarchyDependency[]
+ */
+export const flattenTree = (
     tree: IDependencyGraph[],
     foundComponent: IDependency
-) => {
+): IHierarchyDependency[] => {
     const uniqueOutput: IHierarchyDependency[] = []
 
     const { flatHierarchies } = InDb()
@@ -26,13 +32,13 @@ export const flattentree = (
             uniqueRoot.id = b.rootId
             uniqueRoot.component = b.root
             uniqueRoot.parents = []
-            uniqueRoot.childs = [b.depId]
+            uniqueRoot.children = [b.depId]
             uniqueOutput.push(uniqueRoot)
         }
 
         if (existingRoot) {
-            if (!existingRoot.childs.find((o) => o === b.depId)) {
-                existingRoot.childs.push(b.depId)
+            if (!existingRoot.children.find((o) => o === b.depId)) {
+                existingRoot.children.push(b.depId)
             }
         }
 
@@ -40,7 +46,7 @@ export const flattentree = (
             uniqueDep.id = b.depId
             uniqueDep.component = b.dep
             uniqueDep.parents = [b.rootId]
-            uniqueDep.childs = []
+            uniqueDep.children = []
             uniqueOutput.push(uniqueDep)
         }
 

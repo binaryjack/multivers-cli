@@ -2,6 +2,9 @@ import fs from 'fs'
 
 import { errMsg } from '../errors/helpers.js'
 
+/**
+ * Loads file content
+ */
 export const loadFiles = (fileName: string) => {
     try {
         if (fs.existsSync(fileName)) {

@@ -1,9 +1,12 @@
-import { buildPathLeftOffset } from '../arrayParsers/buildPathLeftOffset.js'
-import { getPathList } from '../arrayParsers/getPathList.js'
 import { InDb } from '../db/db.js'
 import { saveDependencies } from '../db/saveDependencies.js'
+import { buildPathLeftOffset } from '../helpers/buildPathLeftOffset.js'
+import { getPathList } from '../helpers/getPathList.js'
 import { adaptPaths } from './adaptPaths.js'
 
+/**
+ * Dependency Updated
+ */
 export const dependenciesUpdater = () => {
     const { dependencies } = InDb()
 
@@ -15,11 +18,11 @@ export const dependenciesUpdater = () => {
         const pathFromSrc = buildPathLeftOffset(item.filePathFromSrc, 1)
         const pathList = getPathList(pathFromSrc)
 
-        const isVersionnedMatch = RegExp(/\\V\d\\?/).exec(pathFromSrc)
+        const isVersionedMatch = RegExp(/\\V\d\\?/).exec(pathFromSrc)
 
-        const isVersionned = !!isVersionnedMatch
+        const isVersioned = !!isVersionedMatch
 
-        const referencedVerison = isVersionnedMatch?.[0].replace(/\\/, '')
+        const referencedVersion = isVersionedMatch?.[0].replace(/\\/, '')
 
         const pathCount = pathList.length
 
@@ -36,30 +39,30 @@ export const dependenciesUpdater = () => {
             if (
                 deps.paths.length > 0 &&
                 deps.paths[0] === '.' &&
-                !deps.paths.find((o) => o === referencedVerison) &&
-                isVersionned &&
-                referencedVerison
+                !deps.paths.find((o) => o === referencedVersion) &&
+                isVersioned &&
+                referencedVersion
             ) {
                 // append extra step to the component
                 let currentTempPaths = ['.', '..', ...deps.paths.slice(1)]
                 deps.paths = adaptPaths(
                     dependencies,
                     currentTempPaths,
-                    referencedVerison
+                    referencedVersion
                 )
             } else if (
                 deps.paths.length > 0 &&
                 deps.paths.filter((o) => o === '..').length !== pathCount &&
-                !deps.paths.find((o) => o === referencedVerison) &&
-                isVersionned &&
-                referencedVerison
+                !deps.paths.find((o) => o === referencedVersion) &&
+                isVersioned &&
+                referencedVersion
             ) {
                 // append extra step to the component
                 let currentTempPaths = ['..', ...deps.paths]
                 deps.paths = adaptPaths(
                     dependencies,
                     currentTempPaths,
-                    referencedVerison
+                    referencedVersion
                 )
             }
         }

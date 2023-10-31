@@ -4,6 +4,12 @@ import {
     IVersionExists,
 } from '../../models/interop.js'
 
+/**
+ * Check if prepared version files exists (will not check the physical files yet)
+ * @param filesRefs IExistingVersion[]
+ * @param targetedVersion number
+ * @returns IVersionExists | undefined
+ */
 export const checkIfExists = (
     filesRefs: IExistingVersion[],
     targetedVersion: number

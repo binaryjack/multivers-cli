@@ -1,12 +1,22 @@
-import { IDependency, IHierarchyDependency } from '../../models/interop.js'
-import InDb from '../db/index.js'
+import {
+    IDependency,
+    IDependencyVersion,
+    IHierarchyDependency,
+} from '../../models/interop.js'
+import { InDb } from '../db/db.js'
 import { saveVersions } from '../db/saveVersions.js'
 
+/**
+ * Downgrades the latest version for the component
+ * @param flattenedTree IHierarchyDependency[]
+ * @param foundComponent IDependency
+ * @returns IDependencyVersion[]
+ */
 export const setVersionDown = (
     flattenedTree: IHierarchyDependency[],
     foundComponent: IDependency
-) => {
-    const versionOutput = []
+): IDependencyVersion[] => {
+    const versionOutput: IDependencyVersion[] = []
 
     const { versions } = InDb()
 
@@ -15,17 +25,17 @@ export const setVersionDown = (
             ?.dependencies ?? []
 
     for (const f of flattenedTree) {
-        const existigVersion = componentVersions.find(
+        const existingVersion = componentVersions.find(
             (o) => o.fullName === f?.component?.fullName
         )
-        if (existigVersion) {
+        if (existingVersion) {
             versionOutput.push({
-                id: existigVersion.id,
-                fullName: existigVersion.fullName,
+                id: existingVersion.id,
+                fullName: existingVersion.fullName,
                 versions: [
-                    ...existigVersion.versions.slice(
+                    ...existingVersion.versions.slice(
                         0,
-                        existigVersion.versions.length
+                        existingVersion.versions.length - 1
                     ),
                 ],
             })

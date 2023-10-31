@@ -1,5 +1,10 @@
 import { IFile } from '../../models/interop.js'
 
+/**
+ * Append an item to a collection
+ * @param collection
+ * @param item
+ */
 export const addItem = (collection: IFile[], item: IFile) => {
     if (!collection) {
         collection = []

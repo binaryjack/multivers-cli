@@ -3,6 +3,12 @@ import path from 'path'
 
 import { skipDirectory } from './skipDirectory.js'
 
+/**
+ * Gets All files Recursively
+ * @param directory
+ * @param files
+ * @returns
+ */
 export const getAllFiles = (
     directory: string,
     files: string[] = []

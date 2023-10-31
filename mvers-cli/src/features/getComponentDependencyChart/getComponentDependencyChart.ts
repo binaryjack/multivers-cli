@@ -4,8 +4,16 @@ import { setGlobalRoot } from '../../helpers/utils.js'
 import { getComponent } from '../db/getComponent.js'
 import { dependencyBuilder } from '../dependencyBuilder/dependencyBuilder.js'
 import { infoMsg } from '../errors/helpers.js'
-import { stringParsers } from '../stringParsers/stringParsers.js'
+import { replaceAll } from '../helpers/replaceAll.js'
 
+/**
+ * This objects builds the dependency map
+ * @param root
+ * @param component
+ * @param searchWhere
+ * @param recursive
+ * @returns
+ */
 export const getComponentDependencyChart = (
     root: string,
     component: string,
@@ -13,8 +21,6 @@ export const getComponentDependencyChart = (
     recursive = false
 ) => {
     setGlobalRoot(root)
-
-    const { replaceAll } = stringParsers()
 
     // get the component
     const foundComponent = getComponent(component, searchWhere)

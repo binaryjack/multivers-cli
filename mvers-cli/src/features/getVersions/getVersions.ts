@@ -3,6 +3,13 @@ import { InDb } from '../db/db.js'
 import { getComponent } from '../db/getComponent.js'
 import { errMsg, infoMsg, warnMsg } from '../errors/helpers.js'
 
+/**
+ * Gets the version for a given component
+ * @param root
+ * @param componentName
+ * @param searchWhere
+ * @returns
+ */
 export const getVersions = (
     root: string,
     componentName: string,

@@ -1,9 +1,18 @@
 import { setGlobalRoot } from '../../helpers/utils.js'
 import { getComponent } from '../db/getComponent.js'
 import { getVersionNumber } from '../db/getVersionNumber.js'
+import { infoMsg } from '../errors/helpers.js'
 import { clearVersion } from './clearVersion.js'
 
-export const getFilesVersionsAndClear = (
+/**
+ * Clears the physical versioned files.
+ * @param root string
+ * @param component string
+ * @param searchWhere string
+ * @param version string
+ * @returns void
+ */
+export const getFilesVersionsAndClear = async (
     root: string,
     component: string,
     searchWhere: string,
@@ -17,5 +26,10 @@ export const getFilesVersionsAndClear = (
     const requestedVersion = getVersionNumber(foundComponent.fullName, version)
     if (!requestedVersion) return
 
-    clearVersion(foundComponent.fullName, requestedVersion)
+    await clearVersion(foundComponent.fullName, requestedVersion)
+
+    infoMsg(
+        'Clear version files',
+        `Process Complete - requested version: ": ${requestedVersion}`
+    )
 }

@@ -12,6 +12,11 @@ import { loadFiles } from './loadFiles.js'
 import { save } from './save.js'
 import { skipDirectory } from './skipDirectory.js'
 
+/**
+ * This entity manages the files names.
+ * it will create the root directories
+ * @returns
+ */
 export const fileManager = () => {
     const baseDbDirectory = `${global.rootDirectory}\\versions`
     const backupDbDirectory = `${baseDbDirectory}\\bak`
@@ -53,7 +58,7 @@ export const fileManager = () => {
         bakVersionsKeyName,
         bakDependenciesKeyName,
         bakFlatHierarchyTreeKeyName,
-        // loadder
+        // loader
         loadFiles,
         save,
         getAllFiles,
